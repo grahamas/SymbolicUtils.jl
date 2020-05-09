@@ -264,7 +264,12 @@ See [promote_symtype](#promote_symtype)
 struct Term{T} <: Symbolic{T}
     f::Any
     arguments::Any
+    descendants::Int
+    Term{T}(f, arguments) = new{T}(f, arguments, sum(num_descendants, arguments))
 end
+num_descendants(x) = 1
+num_descendants(t::Term) = t.descendants
+
 
 Term(f, args) = Term{rec_promote_symtype(f, map(symtype, args)...)}(f, args)
 
